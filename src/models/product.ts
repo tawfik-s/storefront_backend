@@ -1,4 +1,4 @@
-import client from "../database";
+import client from '../database';
 
 export type product = {
   name: string;
@@ -9,7 +9,7 @@ export class store_products {
   async index(): Promise<product[]> {
     try {
       const conn = await client.connect();
-      const sql = "SELECT * FROM product";
+      const sql = 'SELECT * FROM product';
       const result = await conn.query(sql);
       conn.release();
       return result.rows;
@@ -18,10 +18,10 @@ export class store_products {
     }
   }
 
-  async show(id: string): Promise<product> {
+  async show(id: number): Promise<{ id: number; name: string; price: number }> {
     try {
       const conn = await client.connect();
-      const sql = "SELECT * FROM product where id=($1)";
+      const sql = 'SELECT * FROM product where id=($1)';
       const result = await conn.query(sql, [id]);
       conn.release();
       return result.rows[0];
@@ -30,25 +30,25 @@ export class store_products {
     }
   }
 
-  async create(newProduct: product): Promise<product> {
+  async create(newProduct: product): Promise<boolean> {
     try {
       const conn = await client.connect();
-      const sql = "INSERT INTO product (name,price) values ($1,$2) RETURNING *";
+      const sql = 'INSERT INTO product (name,price) values ($1,$2) RETURNING *';
       const result = await conn.query(sql, [newProduct.name, newProduct.price]);
       conn.release();
-      return result.rows[0];
+      return true;
     } catch (error) {
       throw new Error(`can't insert new data ${error}`);
     }
   }
 
-  async delete(id: string): Promise<product> {
+  async delete(id: number): Promise<boolean> {
     try {
       const conn = await client.connect();
-      const sql = "DELETE from product where id=($1)";
+      const sql = 'DELETE from product where id=($1)';
       const result = await conn.query(sql, [id]);
       conn.release();
-      return result.rows[0];
+      return true;
     } catch (error) {
       throw new Error(`error while deleting${error}`);
     }
