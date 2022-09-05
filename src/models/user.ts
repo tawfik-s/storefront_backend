@@ -11,27 +11,6 @@ const pepper = process.env.BCRYPT_PASSWORD;
 const saltRounds = process.env.SALT_ROUNDS as string;
 
 export class store_users {
-  //   async CheckIfUserExist(newuser: user): Promise<boolean> {
-  //     try {
-  //       const conn = await client.connect();
-  //       const sql = 'SELECT * from users where firstname=($1) AND lastname=($2)';
-  //       const result = await conn.query(sql, [
-  //         newuser.first_name,
-  //         newuser.last_name,
-  //       ]);
-  //       conn.release();
-  //       return bcrypt
-  //         .compare(newuser.password, result.rows[0].password)
-  //         .then(() => {
-  //           return true;
-  //         })
-  //         .catch(() => {
-  //           return false;
-  //         });
-  //     } catch (error) {
-  //       throw new Error(`erro in check user if exist ${error}`);
-  //     }
-  //   }
   async index(): Promise<user[]> {
     try {
       const conn = await client.connect();
@@ -43,9 +22,7 @@ export class store_users {
       throw new Error(`could not get users${error}`);
     }
   }
-  async show(
-    id: number
-  ): Promise<{
+  async show(id: number): Promise<{
     id: number;
     firstname: string;
     lastname: string;
@@ -75,6 +52,17 @@ export class store_users {
       return true;
     } catch (error) {
       throw new Error(`could not create user ${error}`);
+    }
+  }
+  async delete(id: number): Promise<void> {
+    try {
+      const conn = await client.connect();
+      const sql = 'delete from users where id=($1)';
+      const result = await conn.query(sql, [id]);
+      conn.release();
+      return;
+    } catch (error) {
+      throw new Error(`could not delete user ${error}`);
     }
   }
 }

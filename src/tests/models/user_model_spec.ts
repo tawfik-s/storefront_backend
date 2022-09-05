@@ -16,7 +16,7 @@ describe('test user model', () => {
     const result = await users.create(newuser);
     expect(result).toBeTrue();
   });
-  it('show user', async () => {
+  it('test show user', async () => {
     const result = await users.show(1);
     expect(result).toEqual({
       id: 1,
@@ -24,5 +24,10 @@ describe('test user model', () => {
       lastname: 'shalash',
       password: '12',
     });
+  });
+  it('test delete user', async () => {
+    await users.delete(1);
+    const result = await users.index();
+    expect(result.length).toEqual(0);
   });
 });
