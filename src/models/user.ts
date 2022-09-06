@@ -38,18 +38,18 @@ export class store_users {
       throw new Error(`could not get users${error}`);
     }
   }
-  async create(newuser: user): Promise<boolean> {
+  async create(newuser: user): Promise<number> {
     try {
       const conn = await client.connect();
       const sql =
-        'INSERT INTO users(firstname,lastname,password) values($1,$2,$3)';
+        'INSERT INTO users(firstname,lastname,password) values($1,$2,$3) returning id';
       const result = await conn.query(sql, [
         newuser.first_name,
         newuser.last_name,
         newuser.password,
       ]);
       conn.release();
-      return true;
+      return result.rows[0].id;
     } catch (error) {
       throw new Error(`could not create user ${error}`);
     }

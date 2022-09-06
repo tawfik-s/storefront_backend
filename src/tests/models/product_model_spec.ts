@@ -1,6 +1,7 @@
 import { store_products, product } from '../../models/product';
 
 const productobject = new store_products();
+let x = 1;
 describe('test product model', () => {
   it('test model index returning data', async () => {
     const result = await productobject.index();
@@ -12,18 +13,19 @@ describe('test product model', () => {
       price: 1000,
     };
     const result = await productobject.create(newProduct);
-    expect(result).toBeTruthy();
+    x = result;
+    expect(result).toBeGreaterThan(0);
   });
   it('test show method', async () => {
-    const result = await productobject.show(1);
+    const result = await productobject.show(x);
     expect(result).toEqual({
-      id: 1,
+      id: x,
       name: 'watch',
       price: 1000,
     });
   });
   it('test delete method', async () => {
-    const result = await productobject.delete(1);
+    const result = await productobject.delete(x);
     expect(result).toBeTrue();
   });
 });

@@ -30,13 +30,14 @@ export class store_products {
     }
   }
 
-  async create(newProduct: product): Promise<boolean> {
+  async create(newProduct: product): Promise<number> {
     try {
       const conn = await client.connect();
-      const sql = 'INSERT INTO product (name,price) values ($1,$2) RETURNING *';
+      const sql =
+        'INSERT INTO product (name,price) values ($1,$2) RETURNING id';
       const result = await conn.query(sql, [newProduct.name, newProduct.price]);
       conn.release();
-      return true;
+      return result.rows[0].id;
     } catch (error) {
       throw new Error(`can't insert new data ${error}`);
     }
