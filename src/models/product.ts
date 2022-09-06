@@ -6,7 +6,7 @@ export type product = {
 };
 
 export class store_products {
-  async index(): Promise<product[]> {
+  async index(): Promise<{ id: number; name: string; price: number }[]> {
     try {
       const conn = await client.connect();
       const sql = 'SELECT * FROM product';

@@ -65,4 +65,37 @@ export class store_users {
       throw new Error(`could not delete user ${error}`);
     }
   }
+  async checkIfUserExist(newuser: user): Promise<
+    | {
+        id: number;
+        first_name: string;
+        last_name: string;
+        password: string;
+      }
+    | undefined
+  > {
+    try {
+      const conn = await client.connect();
+      const sql =
+        'select * from users where firstname=($1) and lastname=($2) and password($3)';
+      const result = await conn.query(sql, [
+        newuser.first_name,
+        newuser.last_name,
+        newuser.password,
+      ]);
+      conn.release();
+      if (result.rows.length == 0) {
+        return undefined;
+      } else {
+        return {
+          id: result.rows[0].id,
+          first_name: result.rows[0].firstname,
+          last_name: result.rows[0].lastname,
+          password: result.rows[0].password,
+        };
+      }
+    } catch (error) {
+      throw new Error(`could not delete user ${error}`);
+    }
+  }
 }
