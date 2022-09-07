@@ -64,7 +64,7 @@ export class store_orders {
       throw new Error(`could not create new order ${error}`);
     }
   }
-  async changeOrderStatus(id: number, status: string): Promise<void> {
+  async UpdateOrderStatus(id: number, status: string): Promise<void> {
     try {
       const conn = await client.connect();
       const sql = 'update orders set status=($1) where id=($2)';
