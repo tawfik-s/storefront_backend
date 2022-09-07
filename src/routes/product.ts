@@ -4,7 +4,7 @@ import {
   IndexProductController,
   ShowProductController,
   DeleteProductController,
-} from '../controllers/product';
+} from '../controllers/productController';
 
 const router = express.Router();
 

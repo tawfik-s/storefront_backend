@@ -2,8 +2,9 @@ import client from '../database';
 import bcrypt from 'bcrypt';
 
 export type user = {
-  first_name: string;
-  last_name: string;
+  id: number;
+  firstname: string;
+  lastname: string;
   password: string;
 };
 
@@ -22,12 +23,7 @@ export class store_users {
       throw new Error(`could not get users${error}`);
     }
   }
-  async show(id: number): Promise<{
-    id: number;
-    firstname: string;
-    lastname: string;
-    password: string;
-  }> {
+  async show(id: number): Promise<user> {
     try {
       const conn = await client.connect();
       const sql = 'SELECT * FROM users where id=($1)';
@@ -44,8 +40,8 @@ export class store_users {
       const sql =
         'INSERT INTO users(firstname,lastname,password) values($1,$2,$3) returning id';
       const result = await conn.query(sql, [
-        newuser.first_name,
-        newuser.last_name,
+        newuser.firstname,
+        newuser.lastname,
         newuser.password,
       ]);
       conn.release();
@@ -65,37 +61,44 @@ export class store_users {
       throw new Error(`could not delete user ${error}`);
     }
   }
-  async checkIfUserExist(newuser: user): Promise<
-    | {
-        id: number;
-        first_name: string;
-        last_name: string;
-        password: string;
-      }
-    | undefined
-  > {
+  async checkIfUserExist(newuser: user): Promise<user | undefined> {
     try {
       const conn = await client.connect();
-      const sql =
-        'select * from users where firstname=($1) and lastname=($2) and password($3)';
+      const sql = 'select * from users where firstname=($1) and lastname=($2) ';
       const result = await conn.query(sql, [
-        newuser.first_name,
-        newuser.last_name,
-        newuser.password,
+        newuser.firstname,
+        newuser.lastname,
       ]);
       conn.release();
       if (result.rows.length == 0) {
         return undefined;
       } else {
-        return {
-          id: result.rows[0].id,
-          first_name: result.rows[0].firstname,
-          last_name: result.rows[0].lastname,
-          password: result.rows[0].password,
-        };
+        return result.rows[0];
       }
     } catch (error) {
       throw new Error(`could not delete user ${error}`);
+    }
+  }
+  async update(newData: user): Promise<user> {
+    try {
+      const conn = await client.connect();
+
+      const sql =
+        'UPDATE users SET firstname=($1),lastname=($2),password=($3) WHERE id=($4) RETURNING *';
+
+      const result = await conn.query(sql, [
+        newData.firstname,
+        newData.lastname,
+        newData.password,
+        newData.id,
+      ]);
+
+      const user = result.rows[0];
+
+      conn.release();
+      return user;
+    } catch (err) {
+      throw new Error(`can not update product ${err}`);
     }
   }
 }

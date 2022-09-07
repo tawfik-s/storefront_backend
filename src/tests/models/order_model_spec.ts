@@ -8,8 +8,9 @@ const productobject = new store_products();
 describe('test order model', () => {
   it('insert user and products', async () => {
     const newuser: user = {
-      first_name: 'tawfik',
-      last_name: 'shalash',
+      id: 0,
+      firstname: 'tawfik',
+      lastname: 'shalash',
       password: '12',
     };
     await userObject.create(newuser);

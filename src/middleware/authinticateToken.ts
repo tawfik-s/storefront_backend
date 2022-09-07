@@ -12,7 +12,7 @@ exports.authenticateToken = (
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string, (err, user) => {
     if (err) return res.sendStatus(403);
-    req.body.auth_user = user;
+    req.body.user = user;
     next();
   });
 };

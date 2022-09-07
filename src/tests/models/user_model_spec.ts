@@ -9,8 +9,9 @@ describe('test user model', () => {
 
   it('test user create data', async () => {
     const newuser: user = {
-      first_name: 'tawfik',
-      last_name: 'shalash',
+      id: 0,
+      firstname: 'tawfik',
+      lastname: 'shalash',
       password: '12',
     };
     const result = await users.create(newuser);

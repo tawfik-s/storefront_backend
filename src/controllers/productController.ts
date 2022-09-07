@@ -73,3 +73,32 @@ export const DeleteProductController = async (
     res.status(500).send('internal error happened');
   }
 };
+
+export const UpdateProductController = async (
+  req: express.Request,
+  res: express.Response
+): Promise<void> => {
+  try {
+    if (
+      req.body.product_id == undefined ||
+      req.body.product_name == undefined ||
+      req.body.product_price == undefined
+    ) {
+      res
+        .status(400)
+        .send(
+          'please enter a valide parameters request body should contain product_id, product_name and product_price'
+        );
+    }
+    const new_product = {
+      id: req.body.product_id,
+      name: req.body.product_name,
+      price: req.body.product_price,
+    };
+    const storeProduct = new store_products();
+    const result = await storeProduct.update(new_product);
+    res.send(result);
+  } catch (error) {
+    res.status(500).send('internal error happen');
+  }
+};

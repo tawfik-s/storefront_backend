@@ -2,7 +2,8 @@
 /* eslint-disable consistent-return */
 import jwt from 'jsonwebtoken';
 import express from 'express';
-import { store_users } from '../models/user';
+import { store_users, user } from '../models/user';
+import { checkPlainPassword } from '../services/checkPlainPassword';
 export const logoutController = (
   req: express.Request,
   res: express.Response
@@ -22,31 +23,45 @@ exports.loginController = async (
 ) => {
   // send access token
   try {
-    const first_name = req.body.first_name;
-    const last_name = req.body.last_name;
-    const password = req.body.password;
-    const user = {
-      first_name: first_name,
-      last_name: last_name,
-      password: password,
+    if (
+      req.body.firstname == undefined ||
+      req.body.lastname == undefined ||
+      req.body.password == undefined
+    ) {
+      res
+        .status(400)
+        .send(
+          'please enter a valide parameters request body should contain firstname ,lastname,password'
+        );
+    }
+    const firstname = req.body.firstname;
+    const lastname = req.body.lastname;
+    const User: user = {
+      id: 0,
+      firstname: firstname,
+      lastname: lastname,
+      password: '',
     };
 
     //encrypt the password;
     const storeuser = new store_users();
-    const result = await storeuser.checkIfUserExist(user);
+    const result = await storeuser.checkIfUserExist(User);
 
     if (result == undefined) {
-      res.status(401).json({
-        message: 'authentication faulire please register or reenter password',
+      res.status(400).json({
+        message: 'authentication faulire first name and last name error',
       });
-    } else {
+    } else if (checkPlainPassword(req.body.password, result.password)) {
       const accessToken = jwt.sign(
         result,
         process.env.ACCESS_TOKEN_SECRET as string
       ) as string;
       res.cookie('accessToken', accessToken);
       res.send();
-      // res.json({ accessToken: accessToken, refreshToken: refreshToken })
+    } else {
+      res.status(401).json({
+        message: 'authentication faulire password error',
+      });
     }
   } catch (err) {
     res.status(401).send({ message: 'authentication failure' });

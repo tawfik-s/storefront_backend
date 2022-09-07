@@ -54,4 +54,27 @@ export class store_products {
       throw new Error(`error while deleting${error}`);
     }
   }
+
+  async update(newData: { id: number; name: string; price: number }): Promise<{
+    id: number;
+    name: string;
+    price: number;
+  }> {
+    try {
+      const conn = await client.connect();
+      const sql =
+        'update products set name=($2) ,price=($3) WHERE id=($1) returning *';
+
+      const result = await conn.query(sql, [
+        newData.id,
+        newData.name,
+        newData.price,
+      ]);
+      const user = result.rows[0];
+      conn.release();
+      return user;
+    } catch (err) {
+      throw new Error(`can not update product ${err}`);
+    }
+  }
 }
