@@ -17,7 +17,7 @@ export const logoutController = (
   }
 };
 
-exports.loginController = async (
+export const loginController = async (
   req: express.Request,
   res: express.Response
 ) => {

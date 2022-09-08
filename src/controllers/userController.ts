@@ -2,6 +2,19 @@ import express from 'express';
 import { store_users, user } from '../models/user';
 import { incrypt } from '../services/incryptPassService';
 
+export const showMyDataController = async (
+  req: express.Request,
+  res: express.Response
+): Promise<void> => {
+  try {
+    const storeuser = new store_users();
+    const result = await storeuser.show(req.body.user.id);
+    res.send(result);
+  } catch (error) {
+    res.status(400).send('error while regester the new user');
+  }
+};
+
 export const RegisterUserController = async (
   req: express.Request,
   res: express.Response

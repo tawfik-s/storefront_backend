@@ -131,3 +131,45 @@ export const GetOrderProducts = async (
     res.status(500).send(`error in getting your order details${error}`);
   }
 };
+
+export const changeOrderStatusController = async (
+  req: express.Request,
+  res: express.Response
+): Promise<void> => {
+  try {
+    if (
+      req.body.user.id == undefined ||
+      req.body.order_id == undefined ||
+      req.body.status == undefined
+    ) {
+      res
+        .status(400)
+        .send(
+          'please enter a valide parameters request body should contain' +
+            'order_id, status'
+        );
+    }
+    if (!(req.body.status == 'complete' || req.body.status == 'active')) {
+      res.status(400).send('please enter a valide status');
+    }
+    const storeOrders = new store_orders();
+    const result = await storeOrders.getUserOrders(req.body.user.id);
+
+    const userOrdersdWithTheRequiredID = result.filter(function (
+      resultElement
+    ) {
+      return resultElement.id == req.body.order_id;
+    });
+
+    if (userOrdersdWithTheRequiredID.length == 0) {
+      res.status(401).send('you are not authorized to acess this order');
+    }
+    const orderProducts = await storeOrders.UpdateOrderStatus(
+      req.body.order_id,
+      req.body.status
+    );
+    res.send(orderProducts);
+  } catch (error) {
+    res.status(500).send(`error in getting your order details${error}`);
+  }
+};
