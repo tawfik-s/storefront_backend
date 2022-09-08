@@ -18,11 +18,38 @@ describe('test user model', () => {
     userid = result;
     expect(result).toBeGreaterThan(0);
   });
+
   it('test show user', async () => {
     const result = await users.show(userid);
     expect(result).toEqual({
       id: userid,
       firstname: 'tawfik',
+      lastname: 'shalash',
+      password: '12',
+    });
+  });
+
+  it('test user update', async () => {
+    const newuser: user = {
+      id: userid,
+      firstname: 'mohammed',
+      lastname: 'shalash',
+      password: '12',
+    };
+    const result = await users.update(newuser);
+    expect(result).toEqual({
+      id: userid,
+      firstname: 'mohammed',
+      lastname: 'shalash',
+      password: '12',
+    });
+  });
+
+  it('test show user after update', async () => {
+    const result = await users.show(userid);
+    expect(result).toEqual({
+      id: userid,
+      firstname: 'mohammed',
       lastname: 'shalash',
       password: '12',
     });

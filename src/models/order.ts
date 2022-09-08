@@ -37,7 +37,9 @@ export class store_orders {
       throw new Error(`could not get user orders ${error}`);
     }
   }
-  async CreateOrder(newOrder: order): Promise<boolean> {
+  async CreateOrder(
+    newOrder: order
+  ): Promise<{ id: number; user_id: number; status: string; price: number }> {
     try {
       const conn = await client.connect();
       const sql =
@@ -59,7 +61,7 @@ export class store_orders {
         ]);
       }
       conn.release();
-      return true;
+      return user_result.rows[0];
     } catch (error) {
       throw new Error(`could not create new order ${error}`);
     }

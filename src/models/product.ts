@@ -63,7 +63,7 @@ export class store_products {
     try {
       const conn = await client.connect();
       const sql =
-        'update products set name=($2) ,price=($3) WHERE id=($1) returning *';
+        'update product set name=($2) ,price=($3) WHERE id=($1) returning *';
 
       const result = await conn.query(sql, [
         newData.id,

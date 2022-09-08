@@ -16,12 +16,30 @@ describe('test product model', () => {
     x = result;
     expect(result).toBeGreaterThan(0);
   });
-  it('test show method', async () => {
+  it('test show method before update', async () => {
     const result = await productobject.show(x);
     expect(result).toEqual({
       id: x,
       name: 'watch',
       price: 1000,
+    });
+  });
+  it('test update product', async () => {
+    const newProduct = {
+      id: x,
+      name: 'watch',
+      price: 300,
+    };
+    const result = await productobject.update(newProduct);
+    expect(result.id).toEqual(x);
+  });
+
+  it('test show method after update', async () => {
+    const result = await productobject.show(x);
+    expect(result).toEqual({
+      id: x,
+      name: 'watch',
+      price: 300,
     });
   });
   it('test delete method', async () => {
