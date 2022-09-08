@@ -1,7 +1,7 @@
 import jwt, { TokenExpiredError } from 'jsonwebtoken';
 import express from 'express';
 
-exports.authenticateToken = (
+export const authenticateToken = (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
