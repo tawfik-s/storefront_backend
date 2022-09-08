@@ -35,7 +35,7 @@ describe('test order model', () => {
     };
     const result = await orderObject.CreateOrder(newOrder);
     order_id = result.id;
-    expect(result.user_id).toEqual(1);
+    expect(result.user_id).toEqual(userid);
   });
   it('test update order status', async () => {
     await orderObject.UpdateOrderStatus(order_id, 'complete');
@@ -43,11 +43,11 @@ describe('test order model', () => {
   });
 
   it('test getUserOrders in order', async () => {
-    const result = await orderObject.getUserOrders(1);
+    const result = await orderObject.getUserOrders(userid);
     expect(result.length).toEqual(1);
   });
   it('test check new status', async () => {
-    const result = await orderObject.getUserOrders(1);
+    const result = await orderObject.getUserOrders(userid);
     const order = result.filter(
       (elem: { id: number; status: string; price: number }) => {
         return order_id == elem.id;

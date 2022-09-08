@@ -14,10 +14,12 @@ app.get('/', function (req: Request, res: Response) {
   res.send('welcome in storefornt backend API');
 });
 app.use('/product', productRouter);
-app.use('auth', authRouter);
+app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.use('/orders', orderRouter);
 
 app.listen(process.env.PORT || 3000, function () {
   console.log(`starting app on: ${process.env.PORT || 3000}`);
 });
+
+export default app;

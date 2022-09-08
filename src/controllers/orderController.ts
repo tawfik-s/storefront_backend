@@ -168,7 +168,7 @@ export const changeOrderStatusController = async (
       req.body.order_id,
       req.body.status
     );
-    res.send(orderProducts);
+    res.send('done');
   } catch (error) {
     res.status(500).send(`error in getting your order details${error}`);
   }

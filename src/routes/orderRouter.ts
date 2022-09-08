@@ -3,6 +3,7 @@ import {
   changeOrderStatusController,
   CreateOrderController,
   DeleteOrderController,
+  GetMyOrders,
   GetOrderProducts,
   GetUserOrdersController,
 } from '../controllers/orderController';
@@ -13,7 +14,7 @@ const orderRouter = express.Router();
 
 orderRouter.post('/create', authenticateToken, CreateOrderController);
 orderRouter.delete('/delete', authenticateToken, DeleteOrderController); //need auth
-orderRouter.get('/myorders', authenticateToken, GetUserOrdersController);
+orderRouter.get('/myorders', authenticateToken, GetMyOrders);
 orderRouter.get('/products', authenticateToken, GetOrderProducts);
 orderRouter.put('/newstatus', authenticateToken, changeOrderStatusController);
 

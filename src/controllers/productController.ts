@@ -16,16 +16,17 @@ export const CreateProductController = async (
         .send(
           'please enter a valide parameters request body should contain product_name and product_price'
         );
+    } else {
+      const new_product: product = {
+        name: req.body.product_name,
+        price: req.body.product_price,
+      };
+      const storeProduct = new store_products();
+      const result = await storeProduct.create(new_product);
+      res.status(200).send(result);
     }
-    const new_product: product = {
-      name: req.body.product_name,
-      price: req.body.product_price,
-    };
-    const storeProduct = new store_products();
-    const result = await storeProduct.create(new_product);
-    res.send(result);
   } catch (error) {
-    res.status(500).send('internal error happen');
+    res.status(500).send('internal error happen ' + error);
   }
 };
 

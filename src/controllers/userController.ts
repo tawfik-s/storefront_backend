@@ -39,15 +39,15 @@ export const RegisterUserController = async (
       lastname: req.body.lastname,
       password: '',
     };
-    const flag = storeuser.checkIfUserExist(User);
+    const flag = await storeuser.checkIfUserExist(User);
     if (flag != undefined) {
       res.status(409).send('dublicate first and last name');
+    } else {
+      const hash: string = incrypt(req.body.password);
+      User.password = hash;
+      await storeuser.create(User);
+      res.send('user created');
     }
-
-    const hash: string = incrypt(req.body.password);
-    User.password = hash;
-    const result = await storeuser.create(User);
-    res.send('user created');
   } catch (error) {
     res.status(400).send('error while regester the new user');
   }

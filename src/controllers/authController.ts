@@ -57,7 +57,7 @@ export const loginController = async (
         process.env.ACCESS_TOKEN_SECRET as string
       ) as string;
       res.cookie('accessToken', accessToken);
-      res.send();
+      res.send({ accessTokent: accessToken });
     } else {
       res.status(401).json({
         message: 'authentication faulire password error',

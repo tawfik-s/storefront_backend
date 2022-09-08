@@ -76,7 +76,7 @@ export class store_users {
         return result.rows[0];
       }
     } catch (error) {
-      throw new Error(`could not delete user ${error}`);
+      throw new Error(`user is exist ${error}`);
     }
   }
   async update(newData: user): Promise<user> {
