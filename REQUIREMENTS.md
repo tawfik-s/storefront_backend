@@ -50,3 +50,51 @@ These are the notes from a meeting with the frontend developer that describe wha
 - status of order (active or complete)
 
 ## database schema
+
+### table user schema
+
+```sql
+CREATE TABLE users(
+    id SERIAL PRIMARY KEY,
+    firstname VARCHAR(100),
+    lastname VARCHAR(100),
+    password VARCHAR(255)
+);
+```
+
+### table product schema
+
+```sql
+
+CREATE TABLE product(
+    id SERIAL PRIMARY KEY,
+   name VARCHAR(255),
+   price integer);
+
+```
+
+### table orders schema
+
+```sql
+
+CREATE TABLE orders(
+    id SERIAL PRIMARY KEY,
+    user_id integer REFERENCES users(id),
+    status VARCHAR(15),
+    price integer
+);
+
+```
+
+### table orders product schema
+
+```sql
+
+CREATE TABLE order_product(
+    id SERIAL PRIMARY KEY,
+    order_id integer REFERENCES orders(id) NOT NULL,
+    product_id integer REFERENCES product(id) NOT NULL,
+    quantity integer
+);
+
+```
