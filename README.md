@@ -85,12 +85,6 @@ I'm using eslint
 `npm run lint`
 
 ### scripts
-`npm run test` to test the project
-`npm run build` convert typescript to javascript in dist folder
-`npm run run` build and run the project
-`npm lint` run eslint
-`npm run prettier`
-=======
 
 - `npm run test` to test the project
 - `npm run build` convert typescript to javascript in dist folder
