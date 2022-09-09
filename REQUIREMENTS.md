@@ -246,8 +246,7 @@ These are the notes from a meeting with the frontend developer that describe wha
     ```
 
   - Response Body -- `Updated User object`
-
-    ```json
+ ```json
    {
     "id": 8,
     "name": "casioAE1000",
