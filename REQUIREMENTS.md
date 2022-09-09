@@ -354,13 +354,12 @@ These are the notes from a meeting with the frontend developer that describe wha
   - HTTP verb `PUT`
   - Endpoint:- `/orders/newstatus`
   - Request Body
-
-    ```json
+```json
 {
     "order_id":2,
     "status":"complete"
 }
-    ```
+```
 
   - Response Body -- `Updated User text`
 
