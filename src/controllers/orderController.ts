@@ -46,21 +46,23 @@ export const DeleteOrderController = async (
           'please enter a valide parameters request body should contain' +
             'order_id'
         );
-    }
-    const storeOrders = new store_orders();
-    const result = await storeOrders.getUserOrders(req.body.user.id);
+    } else {
+      const storeOrders = new store_orders();
+      const result = await storeOrders.getUserOrders(req.body.user.id);
 
-    const userOrdersdWithTheRequiredID = result.filter(function (
-      resultElement
-    ) {
-      return resultElement.id == req.body.order_id;
-    });
+      const userOrdersdWithTheRequiredID = result.filter(function (
+        resultElement
+      ) {
+        return resultElement.id == req.body.order_id;
+      });
 
-    if (userOrdersdWithTheRequiredID.length == 0) {
-      res.status(401).send('you are not authorized to delete this order');
+      if (userOrdersdWithTheRequiredID.length == 0) {
+        res.status(401).send('you are not authorized to delete this order');
+      } else {
+        await storeOrders.deleteOrder(req.body.order_id);
+        res.send('successfully delete order');
+      }
     }
-    await storeOrders.deleteOrder(req.body.order_id);
-    res.send('successfully delete order');
   } catch (error) {
     res.status(500).send(`error in delete order ${error}`);
   }
@@ -93,8 +95,8 @@ export const GetMyOrders = async (
 ): Promise<void> => {
   try {
     const storeOrders = new store_orders();
-    const result = storeOrders.getUserOrders(req.body.user.id);
-    res.send(result);
+    const result = await storeOrders.getUserOrders(req.body.user.id);
+    res.send({ result: result });
   } catch (error) {
     res.status(500).send(`error in getting your orders ${error}`);
   }
@@ -148,27 +150,30 @@ export const changeOrderStatusController = async (
           'please enter a valide parameters request body should contain' +
             'order_id, status'
         );
-    }
-    if (!(req.body.status == 'complete' || req.body.status == 'active')) {
-      res.status(400).send('please enter a valide status');
-    }
-    const storeOrders = new store_orders();
-    const result = await storeOrders.getUserOrders(req.body.user.id);
-
-    const userOrdersdWithTheRequiredID = result.filter(function (
-      resultElement
+    } else if (
+      !(req.body.status == 'complete' || req.body.status == 'active')
     ) {
-      return resultElement.id == req.body.order_id;
-    });
+      res.status(400).send('please enter a valide status');
+    } else {
+      const storeOrders = new store_orders();
+      const result = await storeOrders.getUserOrders(req.body.user.id);
 
-    if (userOrdersdWithTheRequiredID.length == 0) {
-      res.status(401).send('you are not authorized to acess this order');
+      const userOrdersdWithTheRequiredID = result.filter(function (
+        resultElement
+      ) {
+        return resultElement.id == req.body.order_id;
+      });
+
+      if (userOrdersdWithTheRequiredID.length == 0) {
+        res.status(401).send('you are not authorized to acess this order');
+      } else {
+        const orderProducts = await storeOrders.UpdateOrderStatus(
+          req.body.order_id,
+          req.body.status
+        );
+        res.send('done');
+      }
     }
-    const orderProducts = await storeOrders.UpdateOrderStatus(
-      req.body.order_id,
-      req.body.status
-    );
-    res.send('done');
   } catch (error) {
     res.status(500).send(`error in getting your order details${error}`);
   }

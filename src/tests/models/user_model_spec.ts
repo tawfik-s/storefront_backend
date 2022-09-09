@@ -1,6 +1,7 @@
 import { store_users, user } from '../../models/user';
 let userid = 1;
 const users = new store_users();
+
 describe('test user model', () => {
   it('test user index returning data', async () => {
     const result = await users.index();

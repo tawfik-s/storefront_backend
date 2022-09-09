@@ -3,68 +3,72 @@ import app from '../../server';
 
 const request = supertest(app);
 let accessToken: string;
-describe('Test user end point and controller', () => {
+let product_id: number;
+describe('Test product end points and controller', () => {
   it('test register user', async () => {
     const { body, status } = await request
       .post('/user/register')
       .set('Content-type', 'application/json')
       .set('Accept', 'application/json')
       .send({
-        firstname: 'toto',
+        firstname: 'tawfeek',
         lastname: 'shalash',
         password: 'testtest',
       });
     expect(status).toBe(200);
-  });
-  it('test register user2 without password', async () => {
-    const { body, status } = await request
-      .post('/user/register')
-      .set('Content-type', 'application/json')
-      .send({
-        firstname: 'muhammed',
-        lastname: 'ashraf',
-      });
-    expect(status).toBe(400);
   });
   it('test auth login', async () => {
     const { body, status } = await request
       .post('/auth/login')
       .set('Accept', 'application/json')
       .send({
-        firstname: 'toto',
+        firstname: 'tawfeek',
         lastname: 'shalash',
         password: 'testtest',
       });
     accessToken = body.accessToken;
     expect(status).toEqual(200);
   });
-  it('test user update', async () => {
+  it('test add product', async () => {
     const response = await request
-      .put('/user/update')
+      .post('/product/create')
       .set('Content-type', 'application/json')
       .set('Authorization', 'Bearer ' + accessToken)
       .send({
-        firstname: 'mohammed',
-        lastname: 'shalash',
-        password: 'testtest',
+        product_name: 'watch',
+        product_price: 1000,
       });
-    console.log(accessToken);
+    product_id = response.body.id;
     expect(response.status).toBe(200);
   });
-  it('test user show my data', async () => {
+  it('test get products', async () => {
     const response = await request
-      .get('/user/showme')
+      .get('/product/index')
       .set('Content-type', 'application/json')
-      .set('Authorization', 'Bearer ' + accessToken)
       .send();
+
     expect(response.status).toBe(200);
   });
-  it('test user delete', async () => {
+  it('test update product', async () => {
     const response = await request
-      .delete('/user/delete')
+      .put('/product/update')
       .set('Content-type', 'application/json')
       .set('Authorization', 'Bearer ' + accessToken)
-      .send();
+      .send({
+        product_id: product_id,
+        product_name: 'watch',
+        product_price: 3000,
+      });
+    expect(response.status).toBe(200);
+  });
+  it('test delete product', async () => {
+    const response = await request
+      .delete('/product/delete')
+      .set('Content-type', 'application/json')
+      .set('Authorization', 'Bearer ' + accessToken)
+      .send({
+        product_id: product_id,
+      });
     expect(response.status).toBe(200);
   });
 });

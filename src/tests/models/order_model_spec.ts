@@ -6,6 +6,7 @@ const userObject = new store_users();
 const orderObject = new store_orders();
 const productobject = new store_products();
 let order_id: number;
+let product1: number, product2: number, product3: number;
 let userid: number;
 describe('test order model', () => {
   it('insert user and products', async () => {
@@ -20,16 +21,16 @@ describe('test order model', () => {
       name: 'watch',
       price: 1000,
     };
-    await productobject.create(newProduct);
-    await productobject.create(newProduct);
-    await productobject.create(newProduct);
+    product1 = await productobject.create(newProduct);
+    product2 = await productobject.create(newProduct);
+    product3 = await productobject.create(newProduct);
   });
 
   it('test create order', async () => {
     const newOrder: order = {
       user_id: userid,
       status: 'active',
-      product_id: [1, 2, 3],
+      product_id: [product1, product2, product3],
       quantity: [2, 3, 1],
       price: 2000,
     };
@@ -56,18 +57,19 @@ describe('test order model', () => {
     expect(order[0].status).toEqual('complete');
   });
   it('test getOrderProducts', async () => {
-    const result = await orderObject.getOrderProducts(1);
+    const result = await orderObject.getOrderProducts(order_id);
     expect(result.length).toEqual(3);
   });
   it('test delete order', async () => {
-    await orderObject.deleteOrder(1);
+    await orderObject.deleteOrder(order_id);
     expect(true).toBeTrue();
   });
   it('delete user and products', async () => {
-    await userObject.delete(1);
-    await productobject.delete(1);
-    await productobject.delete(2);
-    await productobject.delete(3);
+    await productobject.delete(product1);
+    await productobject.delete(product2);
+    await productobject.delete(product3);
+    await userObject.delete(userid);
+
     expect(true).toBeTrue();
   });
 });

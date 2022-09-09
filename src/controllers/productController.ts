@@ -23,7 +23,7 @@ export const CreateProductController = async (
       };
       const storeProduct = new store_products();
       const result = await storeProduct.create(new_product);
-      res.status(200).send(result);
+      res.status(200).send({ id: result });
     }
   } catch (error) {
     res.status(500).send('internal error happen ' + error);
