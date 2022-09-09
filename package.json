@@ -7,7 +7,7 @@
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
     "lint": "eslint . --ext .ts",
     "prettier": "prettier --config .prettierrc.json --write \"src/**/*.ts\" ",
-    "start": "nodemon --watch \"./**/*.ts\" --exec \"ts-node\" ./src/index.ts",
+    "start": "nodemon --watch \"./**/*.ts\" --exec \"ts-node\" ./src/server.ts",
     "build": "npx tsc",
     "start:prod": "npm run build ",
     "test": "db-migrate --env test up && npm run build && jasmine && db-migrate reset --env test",
