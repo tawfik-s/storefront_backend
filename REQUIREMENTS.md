@@ -6,48 +6,365 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## API Endpoints
 
+#### Users
+
+- Show **`token required`**
+
+  - HTTP verb `GET`
+  - Endpoint:- `/user/showme` - **id of the user to be retrieved**
+  - Request Body
+
+    ```json
+      N/A
+    ```
+
+  - Response Body -- `user object`
+
+    ```json
+    {
+      "id": 1,
+      "firstname": "toto",
+      "lastname": "toto",
+      "password": "$2b$10$7LApLqUxNcAuDasRap5.Q.0g5MKpWstBSXb9AbiFwiHzP.MJygoKq"
+    }
+    ```
+
+- Create
+
+  - HTTP verb `POST`
+  - Endpoint:- `/user/register`
+  - Request Body
+
+    ```json
+    {
+      "firstname": "toto",
+      "lastname": "to",
+      "password": "testtest"
+    }
+    ```
+
+  - Response Body -- `string`
+
+    ```text
+      ok
+    ```
+
+- Delete **`token required`**
+
+  - HTTP verb `DELETE`
+  - Endpoint:- user/delete` //i will git id from auth token
+  - Request Body
+
+    ```json
+      N/A
+    ```
+
+- Response Body -- `Deleted user object`
+
+  ```text
+  user deleted
+  ```
+
+- update **`token required`**
+
+  - HTTP verb `PUT`
+  - Endpoint:- `/user/update`
+  - Request Body
+
+```json
+{
+  "id": 7,
+  "firstname": "tawfik",
+  "lastname": "to",
+  "password": "newpass"
+}
+```
+
+- Response Body -- `text`
+
+  ```text
+  user updated
+  ```
+
+- Authenticate
+
+  - HTTP verb `POST`
+  - Endpoint:- `/auth/login`
+  - Request Body
+
+    ```json
+    {
+      "firstname": "toto",
+      "lastname": "toto",
+      "password": "testtest"
+    }
+    ```
+
+  - Response Body -- `token in object`
+
+    ```json
+    {
+      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RuYW1lIjoidG90byIsImxhc3RuYW1lIjoidG90byIsInBhc3N3b3JkIjoiJDJiJDEwJDdMQXBMcVV4TmNBdURhc1JhcDUuUS4wZzVNS3BXc3RCU1hiOUFiaUZ3aUh6UC5NSnlnb0txIiwiaWF0IjoxNjYyNzQ1NTg5fQ.OiAkz1bBWKR4_bEX4arJ3JhhRBc-CGD12loPpxk3jkQ"
+    }
+    ```
+
 #### Products
 
 - Index
-- Show (args: product id)
-- Create (args: Product)[token required]
-- [OPTIONAL] Top 5 most popular products
-- [OPTIONAL] Products by category (args: product category)
 
-#### Users
+  - HTTP verb `GET`
+  - Endpoint:- `/product/index`
+  - Request Body
 
-- Index [token required]
-- Show (args: id)[token required]
-- Create (args: User)
+    ```json
+      N/A
+    ```
+
+  - Response Body -- `Array of product objects`
+
+```json
+{
+  "status": "success",
+  "data": {
+    "products": [
+      {
+        "id": 1,
+        "name": "product name",
+        "price": 20
+      }
+    ]
+  },
+  "message": "Products retrieved successfully"
+}
+```
+
+- Show
+
+  - HTTP verb `GET`
+  - Endpoint:- `/api/products/:id` - **id of the product to be retrieved**
+  - Request Body
+
+```json
+      N/A
+```
+
+- Response Body -- `Product object`
+
+````json
+[
+
+    {
+        "id": 8,
+        "name": "casioAE1000",
+        "price": 3000
+    },
+    {
+        "id": 11,
+        "name": "watch",
+        "price": 1000
+    },
+    {
+        "id": 12,
+        "name": "watch",
+        "price": 1000
+    },
+    {
+        "id": 13,
+        "name": "watch",
+        "price": 1000
+    },
+    {
+        "id": 15,
+        "name": "watch",
+        "price": 1000
+    },
+    {
+        "id": 16,
+        "name": "watch",
+        "price": 1000
+    },
+    {
+        "id": 17,
+        "name": "watch",
+        "price": 1000
+    }
+]
+```
+
+- Create **`token required`**
+
+  - HTTP verb `POST`
+  - Endpoint:- `/product/create`
+  - Request Body
+
+```json
+   {
+    "product_name":"watch",
+    "product_price":1000
+}
+```
+
+  - Response Body -- `product id`
+
+```json
+{
+ "id": 23
+}
+```
+
+- Delete **`token required`**
+
+  - HTTP verb `DELETE`
+  - Endpoint:- `/product/delete`
+  - Request Body
+
+```json
+     {
+    "product_id":10
+}
+```
+
+  - Response Body -- `text`
+
+```text
+    element is deleted
+
+```
+
+- update **`token required`**
+
+  - HTTP verb `PUT`
+  - Endpoint:- `/product/update`
+  - Request Body
+
+    ```json
+    {
+        "product_id":8,
+        "product_name":"casioAE1000",
+        "product_price":3000
+    }
+    ```
+
+  - Response Body -- `Updated User object`
+
+    ```json
+   {
+    "id": 8,
+    "name": "casioAE1000",
+    "price": 3000
+}
+ ```
 
 #### Orders
 
-- Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
+- Index - **`token required`**
 
-## Data Shapes
+  - HTTP verb `GET`
+  - Endpoint:- `/orders/myorders`
+  - Request Body
 
-#### Product
+    ```json
+      N/A
+    ```
 
-- id
-- name
-- price
-- [OPTIONAL] category
+  - Response Body -- `Array of order objects, including an array of products added to the order and the associated user`
 
-#### User
+    ```json
+    {
+    "result": [
+        {
+            "id": 3,
+            "status": "active",
+            "price": 2000
+        },
+        {
+            "id": 2,
+            "status": "complete",
+            "price": 2000
+        }
+    ]
+}
+    ```
 
-- id
-- firstName
-- lastName
-- password
+- Show - **`token required`**
 
-#### Orders
+  - HTTP verb `GET`
+  - Endpoint:- `/orders/products`
+  - Request Body
 
-- id
-- id of each product in the order
-- quantity of each product in the order
-- user_id
-- status of order (active or complete)
+    ```json
+      {
+    "order_id":2
+}
+    ```
+
+  - Response Body -- `array of objects contain product id and quntity`
+
+    ```json
+    [
+    {
+        "product_id": 8,
+        "quantity": 2
+    },
+    {
+        "product_id": 2,
+        "quantity": 3
+    },
+    {
+        "product_id": 3,
+        "quantity": 1
+    }
+]
+    ```
+
+- Create **`token required`**
+
+  - HTTP verb `POST`
+  - Endpoint:- `//orders/create`
+  - Request Body
+
+    ```json
+{
+      "status": "active",
+      "product_id": [8, 2, 3],
+      "quantity": [2, 3, 1],
+      "price": 2000
+}
+    ```
+
+  - Response Body -- `text successfully added order`
+
+- Delete **`token required`**
+
+  - HTTP verb `DELETE`
+  - Endpoint:- `/orders/delete` - **id of the order to be deleted**
+  - Request Body
+
+    ```json
+      {
+    "order_id":1
+}
+    ```
+
+  - Response Body -- `Deleted  text`
+
+
+
+- update **`token required`**
+
+  - HTTP verb `PUT`
+  - Endpoint:- `/orders/newstatus`
+  - Request Body
+
+    ```json
+{
+    "order_id":2,
+    "status":"complete"
+}
+    ```
+
+  - Response Body -- `Updated User text`
+
 
 ## database schema
 
@@ -60,7 +377,7 @@ CREATE TABLE users(
     lastname VARCHAR(100),
     password VARCHAR(255)
 );
-```
+````
 
 ### table product schema
 
