@@ -46,6 +46,9 @@ create database  store_backend_test;
 
 6-chenge the value of env in .env to be test when you testing and dev when you run the API
 
+
+7-database is run on localhost port 5432 the project is running on port 4000 to change this please modify the env variables
+
 #### Runing the program locally in development mode
 
 `npm run start`
